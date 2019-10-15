@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Page 1 Title</title>
+
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen" />
+        <link th:href="@{/css/account-management.css}" rel="stylesheet" media="screen" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
+
+    </head>
+
+    <body th:attr="background=@{/img/admin-bg.jpg}">
+
+<!--        <header th:replace="fragments/header :: header" class="header"> This is the header of the admin-layout.</header>-->
+
+        <div th:replace="fragments/menu-admin :: menu-admin"> This is the nav of the admin-layout.</div>
+        
+        <div layout:fragment="content">This content will be replaced if the page
+                        using the layout also defines a layout:fragment="content" segment.</div>
+
+<!--        <footer th:replace="fragments/footer :: footer" class="footer">
+            This is the footer of the admin-layout
+        </footer>-->
+
+        <script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+        
+        <script type="text/javascript" th:src="@{/js/account-management.js}"></script>
+    </body>
+
+</html>

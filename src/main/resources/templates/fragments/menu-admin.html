@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Admin Menu</title>
+</head>
+<body>
+    <!-- Admin Navigator -->
+    <div th:fragment = "menu-admin" id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><img th:src="@{/img/menu-logo.svg}">&#160; Kaisha VN Inc</a>
+                <hr />
+                <a href="#"><em class="fa fa-home"></em> &#160;&#160; About</a>
+                <a href="#"><em class="fa fa-android"></em> &#160;&#160; Services</a>
+                <a href="#"><i class="fa fa-user"></i> &#160;&#160; Users</a>
+                <a href="#"><em class="fa fa-envelope"></em> &#160; Contact</a>
+    </div> 
+</body>
+</html>
