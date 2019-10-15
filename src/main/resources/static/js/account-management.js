@@ -1,30 +1,4 @@
-var mySlidenav_flag = 0;
 
-function openNav() {
-    if (mySlidenav_flag == 0) {
-        document.getElementById("mySidenav").style.width = "250px";
-        document.getElementById("account-myMain").style.marginLeft = "250px";
-        document.getElementById("showhideMenu").style.display = "none";
-        mySlidenav_flag = 1;
-    } else {
-        document.getElementById("mySidenav").style.width = "0";
-        document.getElementById("account-myMain").style.marginLeft = "0";
-        document.getElementById("showhideMenu").style.display = "block";
-        mySlidenav_flag = 0;
-    }
-
-}
-
-function closeNav() {
-    if (mySlidenav_flag == 0) {
-        mySlidenav_flag = 1;
-    } else {
-        mySlidenav_flag = 0;
-    }
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("account-myMain").style.marginLeft = "0";
-    document.getElementById("showhideMenu").style.display = "block";
-}
 
 $(document).ready(function () {
     //console.log("document");
@@ -237,4 +211,32 @@ function autopage() {
             });
         }
     });
+}
+
+var mySlidenav_flag = 0;
+
+function openNav() {
+    if (mySlidenav_flag == 0) {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("account-myMain").style.marginLeft = "250px";
+        document.getElementById("showhideMenu").style.display = "none";
+        mySlidenav_flag = 1;
+    } else {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("account-myMain").style.marginLeft = "0";
+        document.getElementById("showhideMenu").style.display = "block";
+        mySlidenav_flag = 0;
+    }
+
+}
+
+function closeNav() {
+    if (mySlidenav_flag == 0) {
+        mySlidenav_flag = 1;
+    } else {
+        mySlidenav_flag = 0;
+    }
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("account-myMain").style.marginLeft = "0";
+    document.getElementById("showhideMenu").style.display = "block";
 }

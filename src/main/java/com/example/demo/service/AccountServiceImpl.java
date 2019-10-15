@@ -25,7 +25,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 @Service
@@ -37,8 +36,6 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     @Lazy
     private AuthenticationManager authenticationManager;
-
-    private PasswordEncoder passwordEncoder;
     
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
@@ -46,7 +43,6 @@ public class AccountServiceImpl implements AccountService {
     public boolean addAccount(AccountDTO accountDTO) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12); // Strength set as 12
         String encodedPassword = encoder.encode(accountDTO.getPassWord());
-        LOGGER.info(encodedPassword);
         accountDTO.setPassWord(encodedPassword);
         return accountDAO.addAccount(accountDTO);
     }
@@ -69,9 +65,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public boolean delete(int id) {
         AccountDTO account = accountDAO.findById(id);
-//        if (account.isActive()) {
-//            return false;
-//        }
         return accountDAO.delete(id);
     }
 
@@ -97,7 +90,7 @@ public class AccountServiceImpl implements AccountService {
 
             }
 
-            //Make a user with username and password and added spring security context
+            //Make a user with username and password and add to spring security context by security contextholder
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     account.getEmail(), account.getPassWord(), grantedAuthorities);
             token.setDetails(new WebAuthenticationDetails(request));

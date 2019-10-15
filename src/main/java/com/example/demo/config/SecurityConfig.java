@@ -15,9 +15,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  *
  * @author Windows 10
  */
-@Configuration     // Tags the class as a source of bean definitions for the application context.
-@EnableWebSecurity // Tells Spring Boot to start adding beans based on classpath settings, other beans, and various property settings.
-// integrate Spring Security + Spring MVC
+@Configuration      // Tags the class as a source of bean definitions for the application context.
+@EnableWebSecurity  // Tells Spring Boot to start adding beans based on classpath settings, other beans, and various property settings.
+                    // integrate Spring Security + Spring MVC
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -33,16 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/static/**", "/resources/**", "/css/**", "/js/**", "/img/**").permitAll()
                 .antMatchers("/account**").hasAnyRole("user", "admin")
-                //.antMatchers("/anonymous*").anonymous() // Allow anonymous access on /login so that users can authenticate.
+                //.antMatchers("/anonymous*").anonymous()// Allow anonymous access on /login so that users can authenticate.
                 //.antMatchers("/login*").permitAll()
                 //.anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login") // The custom login page
-                .usernameParameter("email") // Login Form have 2 fields with name='email' & name = 'password'
+                .loginPage("/login")                     // The custom login page
+                .usernameParameter("email")              // Login Form have 2 fields with name='email' & name = 'password'
                 .passwordParameter("password")
                 //.loginProcessingUrl("/check-login ")   // The url to submit the username and password to
-                //.defaultSuccessUrl("/account", true)
                 .successForwardUrl("/account")
                 .failureForwardUrl("/account")
                 .permitAll()
@@ -61,11 +60,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-    //Spring Security provides a component that has the direct responsibility of deciding what to do after a successful authentication
-    // – the AuthenticationSuccessHandler.
-//    @Bean
-//    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
-//        return new MySimpleUrlAuthenticationSuccessHandler();
-//    }
 }

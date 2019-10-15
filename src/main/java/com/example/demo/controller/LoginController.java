@@ -34,27 +34,13 @@ public class LoginController {
         return "/login";
     }
 
-//    @PostMapping("/check-login")
-//    public String login(AccountDTO accountDTO) {
-//        Optional<AccountDTO> foundedAccount = accountService.checkLogin(accountDTO);
-//        if (!foundedAccount.isPresent()) {
-//            LOGGER.info("loi r ahhhhhhhhhhhh");
-//            return "redirect:/login";
-//        }
-//        if (foundedAccount.get().getRole().getId() == 1) {
-//            return "redirect:/admin";
-//        } else if (foundedAccount.get().getRole().getId() == 2) {
-//            return "redirect:/home";
-//        }
-//        return "redirect:/home";
+//    @GetMapping("/login-error")
+//    public String loginError(Model model,
+//            ModelMap modelMap) {
+//        model.addAttribute("loginError", true);
+//        modelMap.addAttribute("loginError", true);
+//        return "/login";
 //    }
-    @GetMapping("/login-error")
-    public String loginError(Model model,
-            ModelMap modelMap) {
-        model.addAttribute("loginError", true);
-        modelMap.addAttribute("loginError", true);
-        return "/login";
-    }
 
     @PostMapping("/check-login")
     public String checkLogin(
@@ -63,11 +49,7 @@ public class LoginController {
             HttpServletRequest request,
             RedirectAttributes redirectAttrs,
             HttpServletResponse response) {
-//        if (accountDTO.getErrorMap().size() > 0) {
-//            redirectAttrs.addFlashAttribute("wrongAccount", true);
-//            return "redirect:/login";
-//        }
-        LOGGER.info("post login page:" + accountDTO.getPassWord());
+
         String result = accountService.checkLogin(accountDTO, session, request);
         switch (result) {
             case "admin":
@@ -78,11 +60,4 @@ public class LoginController {
                 return "redirect:/login";
         }
     }
-//    @PostMapping("/check-login")
-//    public String checkLogin(ModelMap map) {
-//        map.addAttribute("accountList", accountService.getAllAccount());
-//        return "/account-management";
-//        //return "redirect:/account";
-//    }
-
 }

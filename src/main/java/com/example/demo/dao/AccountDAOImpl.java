@@ -8,11 +8,6 @@ package com.example.demo.dao;
 import com.example.demo.dto.AccountDTO;
 import com.example.demo.units.CloseUtils;
 import com.example.demo.units.ConnectionUtils;
-import groovyjarjarantlr.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,8 +29,6 @@ public class AccountDAOImpl implements AccountDAO {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    private PasswordEncoder passwordEncoder;
-
     @Override
     public List getAllAccount() {
         List<AccountDTO> accountList = new ArrayList<>();
@@ -48,8 +41,6 @@ public class AccountDAOImpl implements AccountDAO {
             con = ConnectionUtils.getMyConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-
-            LOGGER.info(ps.toString());
 
             while (rs.next()) {
                 AccountDTO accountDTO = new AccountDTO();
@@ -91,7 +82,6 @@ public class AccountDAOImpl implements AccountDAO {
             ps.setString(6, accountDTO.getPhone());
             ps.setNString(7, accountDTO.getAddress());
             ps.setBoolean(8, accountDTO.getIsAdmin());
-            LOGGER.info(ps.toString());
             return ps.executeUpdate() == 1;
         } catch (SQLException ex) {
         } finally {
@@ -119,7 +109,6 @@ public class AccountDAOImpl implements AccountDAO {
             ps.setNString(6, accountDTO.getAddress());
             ps.setBoolean(7, accountDTO.getIsAdmin());
             ps.setString(8, accountDTO.getEmail());
-            LOGGER.info(ps.toString());
             return ps.executeUpdate() == 1;
         } catch (SQLException ex) {
         } finally {
@@ -206,25 +195,20 @@ public class AccountDAOImpl implements AccountDAO {
             con = ConnectionUtils.getConnection();
             ps = (PreparedStatement) con.prepareStatement(sql);
             ps.setString(1, accountDTO.getEmail());
-            LOGGER.info(ps.toString());
             rs = ps.executeQuery();
 
-            //Check account for faber admin manage
+            //Check account exists?
             if (rs.next()) {
-
-//                if (rs.getInt("is_active") == 0) {
-//                    return false;
-//                }
+                //If it exists, check password
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12); // Strength set as 12
-                String encodedPassword = encoder.encode(accountDTO.getPassWord());
                 
                 //if (accountDTO.getPassWord().equals(rs.getString("pass_word"))) {
-                  if (encoder.matches(accountDTO.getPassWord(), rs.getString("pass_word"))) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("accountId", rs.getInt("account_id"));
-                    session.setAttribute("email", accountDTO.getEmail());
-                    session.setAttribute("isAdmin", rs.getInt("is_admin"));
-                    LOGGER.info(session.getAttribute("isAdmin").toString());
+                if (encoder.matches(accountDTO.getPassWord(), rs.getString("pass_word"))) {
+                   HttpSession session = request.getSession();
+                   session.setAttribute("accountId", rs.getInt("account_id"));
+                   session.setAttribute("email", accountDTO.getEmail());
+                   session.setAttribute("isAdmin", rs.getInt("is_admin"));
+                   LOGGER.info(session.getAttribute("isAdmin").toString());
                 }
             }
             return true;
@@ -247,7 +231,6 @@ public class AccountDAOImpl implements AccountDAO {
         accountDTO.setAddress(rs.getNString("address"));
         accountDTO.setIsAdmin(rs.getBoolean("is_admin"));
 
-        LOGGER.info("Full name22: " + rs.getNString("full_name"));
         return accountDTO;
     }
 }

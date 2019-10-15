@@ -17,7 +17,7 @@ public class DemoApplication {
 
         System.out.println("Get connection ... ");
 
-        // Lấy ra đối tượng Connection kết nối vào database.
+        // get Connection connects to database
         Connection conn;
         try {
             conn = ConnectionUtils.getMyConnection();
