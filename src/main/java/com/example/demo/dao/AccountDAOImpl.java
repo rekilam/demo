@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Repository
 public class AccountDAOImpl implements AccountDAO {
@@ -33,7 +32,7 @@ public class AccountDAOImpl implements AccountDAO {
     public List getAllAccount() {
         List<AccountDTO> accountList = new ArrayList<>();
         String sql = "SELECT *\n"
-                + "FROM account\n";
+                + "FROM ACCOUNT\n";
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -44,10 +43,10 @@ public class AccountDAOImpl implements AccountDAO {
 
             while (rs.next()) {
                 AccountDTO accountDTO = new AccountDTO();
-                accountDTO.setAccountId(rs.getInt("account_id"));
-                accountDTO.setEmail(rs.getString("email"));
-                accountDTO.setPassWord(rs.getString("pass_word"));
-                accountDTO.setFullName(rs.getNString("full_name"));
+                accountDTO.setAccountId(rs.getInt("ACCOUNT_ID"));
+                accountDTO.setEmail(rs.getString("unique_email"));
+                accountDTO.setPassWord(rs.getString("password"));
+                accountDTO.setFullName(rs.getNString("fullname"));
                 accountDTO.setSex(rs.getNString("sex"));
                 accountDTO.setBirth(rs.getDate("birth"));
                 accountDTO.setPhone(rs.getString("phone"));
@@ -67,7 +66,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public boolean addAccount(AccountDTO accountDTO) {
-        final String SQL_INSERT = "INSERT INTO account(email,pass_word,full_name,sex,birth,phone,address,is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        final String SQL_INSERT = "INSERT INTO ACCOUNT(unique_email,password,fullname,sex,birth,phone,address,is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con = null;
         PreparedStatement ps = null;
 
@@ -92,9 +91,9 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public boolean updateAccount(AccountDTO accountDTO) {
-        final String SQL_UPDATE = "Update account \n"
-                + "set pass_word = ?, full_name = ?, sex = ?, birth = ?, phone = ?, address = ?, is_admin = ? \n"
-                + "where email = ?";
+        final String SQL_UPDATE = "Update ACCOUNT \n"
+                + "set password = ?, fullname = ?, sex = ?, birth = ?, phone = ?, address = ?, is_admin = ? \n"
+                + "where unique_email = ?";
         Connection con = null;
         PreparedStatement ps = null;
 
@@ -119,7 +118,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public AccountDTO findById(int id) {
-        String sql = "select * from account where account_id = ?";
+        String sql = "select * from ACCOUNT where ACCOUNT_ID = ?";
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -142,7 +141,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public boolean delete(int id) {
-        String sql = "delete from account where account_id = ?";
+        String sql = "delete from ACCOUNT where ACCOUNT_ID = ?";
         Connection con = null;
         PreparedStatement ps = null;
         try {
@@ -160,7 +159,7 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public boolean checkExistAccount(String email) {
-        String sql = "select * from account where email = ?";
+        String sql = "select * from ACCOUNT where unique_email = ?";
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -191,7 +190,7 @@ public class AccountDAOImpl implements AccountDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            String sql = "SELECT * FROM account WHERE email=?;";
+            String sql = "select * from ACCOUNT where unique_email=?;";
             con = ConnectionUtils.getConnection();
             ps = (PreparedStatement) con.prepareStatement(sql);
             ps.setString(1, accountDTO.getEmail());
@@ -201,14 +200,13 @@ public class AccountDAOImpl implements AccountDAO {
             if (rs.next()) {
                 //If it exists, check password
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12); // Strength set as 12
+                //LOGGER.info("password1: " + accountDTO.getPassWord() + "password database: " + rs.getString("password"));
                 
-                //if (accountDTO.getPassWord().equals(rs.getString("pass_word"))) {
-                if (encoder.matches(accountDTO.getPassWord(), rs.getString("pass_word"))) {
+                if (encoder.matches(accountDTO.getPassWord(), rs.getString("password"))) {
                    HttpSession session = request.getSession();
-                   session.setAttribute("accountId", rs.getInt("account_id"));
+                   session.setAttribute("accountId", rs.getInt("ACCOUNT_ID"));
                    session.setAttribute("email", accountDTO.getEmail());
                    session.setAttribute("isAdmin", rs.getInt("is_admin"));
-                   LOGGER.info(session.getAttribute("isAdmin").toString());
                 }
             }
             return true;
@@ -221,10 +219,10 @@ public class AccountDAOImpl implements AccountDAO {
 
     private AccountDTO getAccountDTO(ResultSet rs) throws SQLException {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setAccountId(rs.getInt("account_id"));
-        accountDTO.setEmail(rs.getString("email"));
-        accountDTO.setPassWord(rs.getString("pass_word"));
-        accountDTO.setFullName(rs.getNString("full_name"));
+        accountDTO.setAccountId(rs.getInt("ACCOUNT_ID"));
+        accountDTO.setEmail(rs.getString("unique_email"));
+        accountDTO.setPassWord(rs.getString("password"));
+        accountDTO.setFullName(rs.getNString("fullname"));
         accountDTO.setSex(rs.getNString("sex"));
         accountDTO.setBirth(rs.getDate("birth"));
         accountDTO.setPhone(rs.getString("phone"));

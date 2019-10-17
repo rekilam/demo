@@ -54,7 +54,7 @@ public class HomeController {
 
     @GetMapping("/delete-account")
     public String deleteAccount(
-            @RequestParam(value = "id", required = false) int id, Model model) {
+            @RequestParam(value = "id", required = false) int id) {
         LOGGER.info(" what is id : " + id);
 //        if (accountService.delete(id)); else {
 //            model.addAttribute("error", "error on delete");
@@ -89,11 +89,14 @@ public class HomeController {
 //        }
 //
 //    }
-    @GetMapping("/get-account")
+    
+    //Ajax just use Post Method (GET method is not protected by CSRF and CORS security filters)    
+    @PostMapping("/get-account")
     public ResponseEntity<AccountDTO> getAccount(@RequestParam String id) throws IOException {
         return new ResponseEntity(accountService.findById(Integer.valueOf(id)), HttpStatus.OK);
     }
 
+    //Add & Update Account Method
     @PostMapping(value = "/add-account")
     public String addAccount(@ModelAttribute("accountDTO") @Validated AccountDTO accountDTO,
             BindingResult result // holds the result of a validation and binding and contains errors that may have occurred
@@ -102,9 +105,6 @@ public class HomeController {
             System.out.println("BINDING RESULT ERROR");
             //return "index";
         } else {
-            LOGGER.info("account id: " + accountDTO.getAccountId());
-            System.out.println("add :: account id: " + accountDTO.getAccountId());
-
 //            if (accountService.checkExistAccount(accountDTO.getAccountName()) == false) { //account exits
 //            } else {
 //                //accountService.addAccount(accountDTO);
@@ -114,7 +114,6 @@ public class HomeController {
             } else {
                 accountService.addAccount(accountDTO);
             }
-            //accountService.addAccount(accountDTO);
         }
         return "redirect:/account";
     }

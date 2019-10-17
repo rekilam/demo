@@ -28,6 +28,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 @Service
+@Lazy
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
@@ -78,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
     public String checkLogin(AccountDTO account, HttpSession session, HttpServletRequest request) {
         boolean result = accountDAO.checkLogin(account, request);
         HttpSession newSession = request.getSession();
-
+        String returnResult = "user";
         if (result) {
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
             LOGGER.info(session.getAttribute("isAdmin").toString());
@@ -99,9 +100,9 @@ public class AccountServiceImpl implements AccountService {
             securityContext.setAuthentication(auth);
         }
         if ((int) newSession.getAttribute("isAdmin") == 1) {
-            return "admin";
+            returnResult = "admin";
         }
-        return "user";
+        return returnResult;
     }
 
 }

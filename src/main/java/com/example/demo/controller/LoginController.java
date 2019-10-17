@@ -55,7 +55,7 @@ public class LoginController {
             case "admin":
                 return "redirect:/account";
             case "user":
-                return "redirect:/account";
+                return "redirect:/homepage";
             default:
                 return "redirect:/login";
         }
