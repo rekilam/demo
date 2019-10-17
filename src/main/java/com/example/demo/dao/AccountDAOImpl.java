@@ -17,8 +17,10 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -28,6 +30,9 @@ public class AccountDAOImpl implements AccountDAO {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private BasicDataSource basicDataSource;
+    
     @Override
     public List getAllAccount() {
         List<AccountDTO> accountList = new ArrayList<>();
@@ -37,7 +42,7 @@ public class AccountDAOImpl implements AccountDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            con = ConnectionUtils.getMyConnection();
+            con = basicDataSource.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -55,8 +60,7 @@ public class AccountDAOImpl implements AccountDAO {
                 accountList.add(accountDTO);
             }
         } catch (SQLException ex) {
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } finally {
             CloseUtils.close(rs, ps, con);
         }
@@ -71,7 +75,7 @@ public class AccountDAOImpl implements AccountDAO {
         PreparedStatement ps = null;
 
         try {
-            con = ConnectionUtils.getConnection();
+            con = basicDataSource.getConnection();
             ps = con.prepareStatement(SQL_INSERT);
             ps.setString(1, accountDTO.getEmail());
             ps.setString(2, accountDTO.getPassWord());
@@ -83,6 +87,7 @@ public class AccountDAOImpl implements AccountDAO {
             ps.setBoolean(8, accountDTO.getIsAdmin());
             return ps.executeUpdate() == 1;
         } catch (SQLException ex) {
+            ex.printStackTrace();
         } finally {
             CloseUtils.close(ps, con);
         }
@@ -98,7 +103,7 @@ public class AccountDAOImpl implements AccountDAO {
         PreparedStatement ps = null;
 
         try {
-            con = ConnectionUtils.getConnection();
+            con = basicDataSource.getConnection();
             ps = con.prepareStatement(SQL_UPDATE);
             ps.setString(1, accountDTO.getPassWord());
             ps.setNString(2, accountDTO.getFullName());
@@ -110,6 +115,7 @@ public class AccountDAOImpl implements AccountDAO {
             ps.setString(8, accountDTO.getEmail());
             return ps.executeUpdate() == 1;
         } catch (SQLException ex) {
+            ex.printStackTrace();
         } finally {
             CloseUtils.close(ps, con);
         }
@@ -124,7 +130,7 @@ public class AccountDAOImpl implements AccountDAO {
         ResultSet rs = null;
         AccountDTO account = new AccountDTO();
         try {
-            con = ConnectionUtils.getConnection();
+            con = basicDataSource.getConnection();
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
@@ -145,7 +151,7 @@ public class AccountDAOImpl implements AccountDAO {
         Connection con = null;
         PreparedStatement ps = null;
         try {
-            con = ConnectionUtils.getConnection();
+            con = basicDataSource.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, String.valueOf(id));
             ps.executeUpdate();
@@ -165,7 +171,7 @@ public class AccountDAOImpl implements AccountDAO {
         ResultSet rs = null;
         AccountDTO account = new AccountDTO();
         try {
-            con = ConnectionUtils.getConnection();
+            con = basicDataSource.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, String.valueOf(email));
             rs = ps.executeQuery();
@@ -191,7 +197,7 @@ public class AccountDAOImpl implements AccountDAO {
         ResultSet rs = null;
         try {
             String sql = "select * from ACCOUNT where unique_email=?;";
-            con = ConnectionUtils.getConnection();
+            con = basicDataSource.getConnection();
             ps = (PreparedStatement) con.prepareStatement(sql);
             ps.setString(1, accountDTO.getEmail());
             rs = ps.executeQuery();
