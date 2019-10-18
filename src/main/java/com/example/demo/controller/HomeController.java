@@ -47,51 +47,18 @@ public class HomeController {
     @GetMapping("/account")
     public String getAccountManagement(ModelMap map) {
         map.addAttribute("accountList", accountService.getAllAccount());
-//        List<AccountDTO> accountList = accountService.getAllAccount();
-//        LOGGER.info(accountList.get(0).getAccountName());
         return "/account-management";
     }
 
     @GetMapping("/delete-account")
     public String deleteAccount(
             @RequestParam(value = "id", required = false) int id) {
-        LOGGER.info(" what is id : " + id);
-//        if (accountService.delete(id)); else {
-//            model.addAttribute("error", "error on delete");
-//        }
         accountService.delete(id);
         return "redirect:/account";
     }
-
-//    @GetMapping("/get-account")
-//    public void getAccount(@RequestParam String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        LOGGER.info(" what is id : " + id);
-//        PrintWriter out = response.getWriter(); //lam gon code
-//        response.setContentType("text/html;charset=UTF-8");
-//        request.setCharacterEncoding("utf-8");
-//        //response.setHeader("Content-Type", "application/json;charset=UTF-8");
-//        //response.setContentType("application/json;charset=UTF-8");
-//        response.setContentType( "application/json" );
-//        response.setCharacterEncoding( "UTF-8" );
-//        if(accountService.findById(Integer.valueOf(id)) != null) {
-//            response.setContentType("application/json");
-//            response.setCharacterEncoding("utf-8");
-//            // Import gson-2.2.2.jar
-//            Gson gson = new Gson();
-//            String objectToReturn = gson.toJson(accountService.findById(Integer.valueOf(id))); // Convert List -> Json
-//            out.write(objectToReturn); // Ä�Æ°a Json tráº£ vá»� Ajax
-//            out.flush();
-//            // response.getWriter().write(objectToReturn);
-//        }else {
-//            response.setContentType("application/json");
-//            out.write("{\"check\":\"fail\"}");
-//            out.flush();
-//        }
-//
-//    }
     
     //Ajax just use Post Method (GET method is not protected by CSRF and CORS security filters)    
-    @PostMapping("/get-account")
+    @PostMapping("/find-account")
     public ResponseEntity<AccountDTO> getAccount(@RequestParam String id) throws IOException {
         return new ResponseEntity(accountService.findById(Integer.valueOf(id)), HttpStatus.OK);
     }
@@ -99,16 +66,12 @@ public class HomeController {
     //Add & Update Account Method
     @PostMapping(value = "/add-account")
     public String addAccount(@ModelAttribute("accountDTO") @Validated AccountDTO accountDTO,
-            BindingResult result // holds the result of a validation and binding and contains errors that may have occurred
+            BindingResult result  // holds the result of a validation and binding and contains errors that may have occurred
     ) {
         if (result.hasErrors()) { //check form is validated
             System.out.println("BINDING RESULT ERROR");
             //return "index";
         } else {
-//            if (accountService.checkExistAccount(accountDTO.getAccountName()) == false) { //account exits
-//            } else {
-//                //accountService.addAccount(accountDTO);
-//            }
             if (accountDTO.getAccountId() != 0) {
                 accountService.updateAccount(accountDTO);
             } else {

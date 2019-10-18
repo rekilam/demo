@@ -32,6 +32,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
+    @Lazy
     private AccountDAO accountDAO;
 
     @Autowired
