@@ -103,7 +103,7 @@ var getJsonAccount = function (accountId) {
             console.log("error");
         }
     });
-}
+};
 
 var getJsonAccount2 = function (accountId) {
     $.get("get-account", {

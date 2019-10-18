@@ -76,9 +76,9 @@ public class AccountDAOImpl implements AccountDAO {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            //while (rs.next()) {
+            if (rs.next()) {
                 account = account.getAccountDTO(rs);
-            //}
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {

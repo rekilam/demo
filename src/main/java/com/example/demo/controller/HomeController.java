@@ -48,15 +48,7 @@ public class HomeController {
         map.addAttribute("accountList", accountService.getAllAccount());
         return "/account-management";
     }
-
-    @PostMapping("/delete-account")
-    public String deleteAccount(
-            @RequestParam(value = "id", required = false) int id) {
-        accountService.delete(id);
-        return "redirect:/account";
-    }
     
-    //Ajax just use Post Method (GET method is not protected by CSRF and CORS security filters)    
     @GetMapping("/get-account")
     public ResponseEntity<AccountDTO> getAccount(@RequestParam String id) throws IOException {
         return new ResponseEntity(accountService.findById(Integer.valueOf(id)), HttpStatus.OK);
@@ -77,6 +69,13 @@ public class HomeController {
                 accountService.addAccount(accountDTO);
             }
         }
+        return "redirect:/account";
+    }
+    
+    @PostMapping("/delete-account")
+    public String deleteAccount(
+            @RequestParam(value = "id", required = false) int id) {
+        accountService.delete(id);
         return "redirect:/account";
     }
 }
