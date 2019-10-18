@@ -63,8 +63,8 @@ var validateForm = function () {
 
 var getJsonAccount = function (accountId) {
     $.ajax({
-        type: "POST",
-        url: "/find-account?id=" + accountId,
+        type: "GET",
+        url: "/get-account?id=" + accountId,
         cache: false,
         timeout: 600000,
         success: function (data) {
@@ -106,7 +106,7 @@ var getJsonAccount = function (accountId) {
 }
 
 var getJsonAccount2 = function (accountId) {
-    $.get("find-account", {
+    $.get("get-account", {
         id: accountId
     }, function (data) {
         if (data.check == "fail") {

@@ -8,15 +8,15 @@ public interface AccountDAO {
 
     boolean checkLogin(AccountDTO account, HttpServletRequest request);
 
+    List<AccountDTO> getAllAccount();
+
+    AccountDTO findById(int id);
+    
     boolean addAccount(AccountDTO accountDTO);
 
     boolean updateAccount(AccountDTO accountDTO);
 
-    List<AccountDTO> getAllAccount();
-
-    AccountDTO findById(int id);
-
     boolean delete(int id);
 
-    boolean checkExistAccount(String accountName);
+    //boolean checkExistAccount(String accountName);
 }

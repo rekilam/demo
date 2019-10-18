@@ -42,41 +42,6 @@ public class AccountServiceImpl implements AccountService {
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Override
-    public boolean addAccount(AccountDTO accountDTO) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12); // Strength set as 12
-        String encodedPassword = encoder.encode(accountDTO.getPassWord());
-        accountDTO.setPassWord(encodedPassword);
-        return accountDAO.addAccount(accountDTO);
-    }
-
-    @Override
-    public List getAllAccount() {
-        return accountDAO.getAllAccount();
-    }
-
-    @Override
-    public AccountDTO findById(int id) {
-        return accountDAO.findById(id);
-    }
-
-    @Override
-    public boolean updateAccount(AccountDTO accountDTO) {
-        return accountDAO.updateAccount(accountDTO);
-    }
-
-    @Override
-    public boolean delete(int id) {
-        AccountDTO account = accountDAO.findById(id);
-        return accountDAO.delete(id);
-    }
-
-    @Override
-    public boolean checkExistAccount(String email) {
-        boolean account = accountDAO.checkExistAccount(email);
-        return account;
-    }
-
-    @Override
     public String checkLogin(AccountDTO account, HttpSession session, HttpServletRequest request) {
         boolean result = accountDAO.checkLogin(account, request);
         HttpSession newSession = request.getSession();
@@ -89,7 +54,6 @@ public class AccountServiceImpl implements AccountService {
                 grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_admin"));
             } else {
                 grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_account"));
-
             }
 
             //Make a user with username and password and add to spring security context by security contextholder
@@ -105,5 +69,33 @@ public class AccountServiceImpl implements AccountService {
         }
         return returnResult;
     }
+    
+    @Override
+    public List getAllAccount() {
+        return accountDAO.getAllAccount();
+    }
+    
+    @Override
+    public AccountDTO findById(int id) {
+        return accountDAO.findById(id);
+    }
+    
+    @Override
+    public boolean addAccount(AccountDTO accountDTO) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12); // Strength set as 12
+        String encodedPassword = encoder.encode(accountDTO.getPassWord());
+        accountDTO.setPassWord(encodedPassword);
+        return accountDAO.addAccount(accountDTO);
+    }
 
+    @Override
+    public boolean updateAccount(AccountDTO accountDTO) {
+        return accountDAO.updateAccount(accountDTO);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        AccountDTO account = accountDAO.findById(id);
+        return accountDAO.delete(id);
+    }
 }

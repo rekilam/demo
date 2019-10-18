@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.example.demo.service.AccountService;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,7 +49,7 @@ public class HomeController {
         return "/account-management";
     }
 
-    @GetMapping("/delete-account")
+    @PostMapping("/delete-account")
     public String deleteAccount(
             @RequestParam(value = "id", required = false) int id) {
         accountService.delete(id);
@@ -58,7 +57,7 @@ public class HomeController {
     }
     
     //Ajax just use Post Method (GET method is not protected by CSRF and CORS security filters)    
-    @PostMapping("/find-account")
+    @GetMapping("/get-account")
     public ResponseEntity<AccountDTO> getAccount(@RequestParam String id) throws IOException {
         return new ResponseEntity(accountService.findById(Integer.valueOf(id)), HttpStatus.OK);
     }

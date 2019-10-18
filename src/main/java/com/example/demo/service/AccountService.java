@@ -11,15 +11,15 @@ public interface AccountService {
 
     String checkLogin(AccountDTO account, HttpSession session, HttpServletRequest request);
     
-    boolean addAccount(AccountDTO accountDTO);
-    
-    boolean updateAccount(AccountDTO accountDTO);
-
     List<AccountDTO> getAllAccount();
 
     AccountDTO findById(int id);
     
+    boolean addAccount(AccountDTO accountDTO);
+    
+    boolean updateAccount(AccountDTO accountDTO);
+
     boolean delete(int id);
     
-    boolean checkExistAccount(String email);
+    //boolean checkExistAccount(String email);
 }

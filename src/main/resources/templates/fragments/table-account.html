@@ -44,8 +44,9 @@
                                                 <a id="btnUpdateAccount" class="btn-common btn-default" data-toggle="modal" data-target="#addAccountModal"
                                                    th:data1="${account.accountId}"
                                                    th:onclick="'getJsonAccount('+ *{account.accountId} +')'"><em class="fa fa-pencil"></em></a>
-                                                <a class="btn-common btn-danger"
-                                                   th:href="@{/delete-account/?id={id}(id=${account.accountId})}"><em class="fa fa-trash"></em></a>
+                                                <form th:action="@{/delete-account/?id={id}(id=${account.accountId})}" th:method="post">
+                                                    <button class="btn-common btn-danger" type="submit"><em class="fa fa-trash"></em></button>
+                                                </form>
                                             </td>
                                             <td class="hidden-xs" th:text="${account.accountId}"></td>
                                             <td th:utext="${account.email}"></td>

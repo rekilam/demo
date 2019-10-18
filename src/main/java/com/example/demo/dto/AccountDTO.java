@@ -1,6 +1,8 @@
 package com.example.demo.dto;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AccountDTO {
 
@@ -33,6 +35,21 @@ public class AccountDTO {
         this.isAdmin = isAdmin;
     }
 
+    public AccountDTO getAccountDTO(ResultSet rs) throws SQLException {
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setAccountId(rs.getInt("ACCOUNT_ID"));
+        accountDTO.setEmail(rs.getString("unique_email"));
+        accountDTO.setPassWord(rs.getString("password"));
+        accountDTO.setFullName(rs.getString("fullname"));
+        accountDTO.setSex(rs.getString("sex"));
+        accountDTO.setBirth(rs.getDate("birth"));
+        accountDTO.setPhone(rs.getString("phone"));
+        accountDTO.setAddress(rs.getString("address"));
+        accountDTO.setIsAdmin(rs.getBoolean("is_admin"));
+
+        return accountDTO;
+    }
+    
     /**
      * @return the accountId
      */
